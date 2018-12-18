@@ -31,8 +31,14 @@ Plugin 'VundleVim/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end.
 
 " plugin on GitHub repo
+Plugin 'previm/previm'
 " Plugin 'tpope/vim-fugitive'
+Plugin 'altercation/vim-colors-solarized'
+"Plugin 'tpope/vim-markdown'
+Plugin 'godlygeek/tabular'                          " Must come before vim-markdown
+Plugin 'plasticboy/vim-markdown'                    " tabular must come before this
 Plugin 'terryma/vim-multiple-cursors'
+"Plugin 'spf13/vim-preview'
 
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
@@ -130,10 +136,15 @@ if has("persistent_undo")
   set undodir=~/.backup/vim/undo/,~/tmp,.
 endif
 
+" Syntax highlighting and linting
+syntax enable
+set background=dark
+colorscheme solarized
+
 " folding
 if has("folding")
   set foldcolumn=0        " columns for folding
-  set foldmethod=indent
+  set foldmethod=syntax
   set foldlevel=9
   set nofoldenable        "dont fold by default "
 endif
@@ -145,4 +156,13 @@ if has("autocmd")
     \   exe "normal g`\"" |
     \ endif
 endif
+
+" Markdown config
+"autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+let g:vim_markdown_fenced_languages = ['csharp=cs']
+
+augroup PrevimSettings
+    autocmd!
+    autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
+augroup END
 

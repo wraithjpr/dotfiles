@@ -26,43 +26,9 @@ Plug 'jiangmiao/auto-pairs'             " Insert or delete brackets, parens, quo
 Plug 'machakann/vim-highlightedyank'    " Make the yanked region apparent
 Plug 'editorconfig/editorconfig-vim'    " adds support for .editorconfig files
 
-<<<<<<< HEAD
 if has('nvim')
     Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
 endif
-=======
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
-
-" plugin on GitHub repo
-Plugin 'previm/previm'
-" Plugin 'tpope/vim-fugitive'
-Plugin 'altercation/vim-colors-solarized'
-"Plugin 'tpope/vim-markdown'
-Plugin 'godlygeek/tabular'                          " Must come before vim-markdown
-Plugin 'plasticboy/vim-markdown'                    " tabular must come before this
-Plugin 'terryma/vim-multiple-cursors'
-"Plugin 'spf13/vim-preview'
-
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-
-" Git plugin not hosted on GitHub
-" Plugin 'git://git.wincent.com/command-t.git'
-
-" git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
-
-" The sparkup vim script is in a subdirectory of this repo called vim. Pass the path to set the runtimepath properly.
-" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
->>>>>>> 40edb2dcc6dbe3979146bd8013f5ddacee8d9eca
 
 call plug#end()
 
@@ -135,7 +101,6 @@ if has("persistent_undo")
   set undodir=~/.backup/vim/undo/,~/tmp,.
 endif
 
-<<<<<<< HEAD
 " Remember last position in file
 "if has("autocmd")
 "  autocmd BufReadPost *
@@ -146,12 +111,6 @@ endif
 
 " Syntax highlighting and linting
 syntax enable
-=======
-" Syntax highlighting and linting
-syntax enable
-set background=dark
-colorscheme solarized
->>>>>>> 40edb2dcc6dbe3979146bd8013f5ddacee8d9eca
 
 " folding
 if has("folding")
@@ -340,15 +299,4 @@ if has('nvim')
 
 endif
 
-<<<<<<< HEAD
-=======
-" Markdown config
-"autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-let g:vim_markdown_fenced_languages = ['csharp=cs']
-
-augroup PrevimSettings
-    autocmd!
-    autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} set filetype=markdown
-augroup END
->>>>>>> 40edb2dcc6dbe3979146bd8013f5ddacee8d9eca
 

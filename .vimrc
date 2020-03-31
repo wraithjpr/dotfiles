@@ -17,7 +17,7 @@ Plug 'altercation/vim-colors-solarized' " solarized colour scheme
 Plug 'junegunn/seoul256.vim'            " seoul256 colour scheme
 Plug '/usr/local/opt/fzf'               " If installed using Homebrew
 Plug 'junegunn/fzf.vim'                 " fuzzy file find
-Plug 'scrooloose/nerdtree'              " directory/file tree
+"Plug 'scrooloose/nerdtree'              " directory/file tree
 Plug 'vim-airline/vim-airline'          " status & tabline
 Plug 'tpope/vim-surround'               " easily add, change & delete surroundings in pairs brackets, quotes, XML & HTML tags
 Plug 'tpope/vim-repeat'                 " adds support of . vim command to plugins, eg. vim-surround
@@ -50,7 +50,7 @@ set laststatus=2                    " always show the status lines
 set list listchars=tab:→\ ,trail:▸  " in list mode show tabs and trailing spaces
 set number                          " precede each line with its line number
 set numberwidth=3                   " number of columns for line numbers
-set relativenumber                  " Show the line number relative to the line with the cursor
+"set relativenumber                  " Show the line number relative to the line with the cursor
 set ruler                           " line and column number of the cursor position
 set showcmd                         " Show (partial) command in status line.
 set showmatch                       " Show matching brackets.
@@ -137,14 +137,14 @@ endif
 "autocmd vimenter * NERDTree
 
 " Open a NERDTree automatically when Vim starts if no files were specified
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " Close Vim if the only window left open is a NERDTree
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 " NERDTree ignores
-let NERDTreeIgnore=['bin[[dir]]','target[[dir]]', 'tags[[file]]', '\~$']
+"let NERDTreeIgnore=['bin[[dir]]','target[[dir]]', 'tags[[file]]', '\~$']
 
 " -----------------------------------------------------------------------------
 " EDITORCONFIG config
@@ -176,7 +176,11 @@ nnoremap <Right> <Nop>
 "close the current window
 nnoremap <C-c> <C-w>c
 
-"Switch between different windows by their direction`
+" To use `CTRL+{h,j,k,l}` to navigate windows from any mode: >
+inoremap <C-h> <C-\><C-N><C-w>h
+inoremap <C-j> <C-\><C-N><C-w>j
+inoremap <C-k> <C-\><C-N><C-w>k
+inoremap <C-l> <C-\><C-N><C-w>l
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -203,26 +207,24 @@ nnoremap ]t :tabn<cr>
 nnoremap [t :tabp<cr>
 
 " ----------------------------------------------------------------------------
-" <tab> / <s-tab> | Circular windows navigation
-" ----------------------------------------------------------------------------
-nnoremap <tab>   <C-w>w
-nnoremap <S-tab> <C-w>W
-
-" ----------------------------------------------------------------------------
 " Files and folders
 " ----------------------------------------------------------------------------
 
 "open NERDTree
-nnoremap <Leader>n :NERDTreeToggle<CR>
+"nnoremap <Leader>n :NERDTreeToggle<CR>
 
 " Fuzzy find with fzf.
 nnoremap <C-p> :FZF<CR>
 
 " Save the current buffer.
+inoremap <Leader>fs <Esc>:w<CR>i
 nnoremap <Leader>fs :w<CR>
 
 " File exit
 nnoremap <Leader>fx :bd<CR>
+
+" Fuzzy find on FZF Buffers
+nnoremap <Leader>p :Buffers<CR>
 
 " ----------------------------------------------------------------------------
 " Insert text
@@ -237,7 +239,20 @@ nnoremap <Leader>ts "=strftime("%Y-%m-%dT%H:%M:%SZ")<CR>p
 " -----------------------------------------------------------------------------
 if has('nvim')
 
-    let g:coc_global_extensions = ['coc-emoji', 'coc-eslint', 'coc-prettier', 'coc-tsserver','coc-tslint', 'coc-tslint-plugin', 'coc-css', 'coc-json', 'coc-yaml', 'coc-stylelint']
+    " To map <Esc> to exit terminal-mode: >
+    tnoremap <Esc> <C-\><C-n>
+
+    " To simulate |i_CTRL-R| in terminal-mode: >
+    tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
+
+    " To use `CTRL+{h,j,k,l}` to navigate windows from any mode: >
+    tnoremap <C-h> <C-\><C-N><C-w>h
+    tnoremap <C-j> <C-\><C-N><C-w>j
+    tnoremap <C-k> <C-\><C-N><C-w>k
+    tnoremap <C-l> <C-\><C-N><C-w>l
+
+    " CoC Extentions
+    let g:coc_global_extensions = ['coc-emoji', 'coc-eslint', 'coc-prettier', 'coc-tsserver', 'coc-tslint', 'coc-tslint-plugin', 'coc-css', 'coc-json', 'coc-yaml', 'coc-stylelint', 'coc-xml']
 
     " Better display for messages
     set cmdheight=2

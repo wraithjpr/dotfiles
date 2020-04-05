@@ -1,71 +1,48 @@
 set nocompatible              " be iMproved, required
 set encoding=utf-8
 
-filetype off                  " required
-
-" Install vundle if not already installed
-if has("user_commands")
-  " Setting up Vundle - the vim plugin bundler
-  let VundleInstalled=0
-  let vundle_readme=expand('~/.vim/bundle/Vundle.vim/README.md')
-  if !filereadable(vundle_readme)
-    echo "Installing Vundle.."
-    echo ""
-    silent !mkdir -p ~/.vim/bundle
-    silent !git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-    let VundleInstalled=1
-  endif
+" =============================================================================
+" Install Vim plugin manager, https://github.com/junegunn/vim-plug
+" =============================================================================
+" install automatically
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-" set the runtime path to include Vundle and initialize
-set runtimepath+=~/.vim/bundle/Vundle.vim
+call plug#begin('~/.vim/plugged')
+Plug 'junegunn/vim-plug'                " registered vim-plug as a plugin so that Vim help for vim-plug itself is available (e.g. :help plug-options)
+Plug 'altercation/vim-colors-solarized' " solarized colour scheme
+Plug 'junegunn/seoul256.vim'            " seoul256 colour scheme
+Plug '/usr/local/opt/fzf'               " If installed using Homebrew
+Plug 'junegunn/fzf.vim'                 " fuzzy file find
+"Plug 'scrooloose/nerdtree'              " directory/file tree
+Plug 'vim-airline/vim-airline'          " status & tabline
+Plug 'tpope/vim-surround'               " easily add, change & delete surroundings in pairs brackets, quotes, XML & HTML tags
+Plug 'tpope/vim-repeat'                 " adds support of . vim command to plugins, eg. vim-surround
+"Plug 'raimondi/delimitmate'             " automatic closing of quotes, parenthesis, brackets, etc.
+Plug 'jiangmiao/auto-pairs'             " Insert or delete brackets, parens, quotes in pair.
+Plug 'machakann/vim-highlightedyank'    " Make the yanked region apparent
+Plug 'editorconfig/editorconfig-vim'    " adds support for .editorconfig files
 
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+if has('nvim')
+    Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
+endif
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+call plug#end()
 
-" The following are examples of different formats supported.
-" Keep Plugin commands between vundle#begin/end.
+" =============================================================================
+" VIM settings
+" =============================================================================
+filetype plugin indent on
 
-" plugin on GitHub repo
-" Plugin 'tpope/vim-fugitive'
-Plugin 'terryma/vim-multiple-cursors'
-
-" plugin from http://vim-scripts.org/vim/scripts.html
-" Plugin 'L9'
-
-" Git plugin not hosted on GitHub
-" Plugin 'git://git.wincent.com/command-t.git'
-
-" git repos on your local machine (i.e. when working on your own plugin)
-" Plugin 'file:///home/gmarik/path/to/plugin'
-
-" The sparkup vim script is in a subdirectory of this repo called vim. Pass the path to set the runtimepath properly.
-" Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-
-" Install L9 and avoid a Naming conflict if you've already installed a different version somewhere else.
-" Plugin 'ascenator/L9', {'name': 'newL9'}
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-
-let mapleader = ","
-let maplocalleader = "_"
+" colour scheme
+set background=dark
+"set background=light
+colorscheme solarized
+"colorscheme seoul256
+"colorscheme seoul256-light
 
 " presentation settings
 set nocursorline                    " no highlight of the screen line of the cursor
@@ -73,7 +50,7 @@ set laststatus=2                    " always show the status lines
 set list listchars=tab:→\ ,trail:▸  " in list mode show tabs and trailing spaces
 set number                          " precede each line with its line number
 set numberwidth=3                   " number of columns for line numbers
-set relativenumber                  " Show the line number relative to the line with the cursor 
+"set relativenumber                  " Show the line number relative to the line with the cursor
 set ruler                           " line and column number of the cursor position
 set showcmd                         " Show (partial) command in status line.
 set showmatch                       " Show matching brackets.
@@ -83,6 +60,7 @@ set wildmenu                        " enhanced command completion
 set nowrap                          " Do not wrap words (view)
 
 " Behaviour
+set hidden                          " a buffer becomes hidden when it is abandoned
 set noautochdir                     " do not change the current working directory
 set autoindent                      " automatically indent new line
 set autoread                        " automatically read a file changed on disk externally to vim
@@ -93,6 +71,8 @@ set matchpairs+="<:>,=:;"           " The % command also jumps for HTML tags and
 set shell=$SHELL                    " use current shell for shell commands
 set smartindent                     " smart auto-indenting when starting a new line
 set smarttab                        " samrt tabs according to shiftwidth and tabstop
+set splitbelow                      " spawn horizontal splits below instead of above
+set splitright                      " spwan vertical splits to the right instead of to the left
 
 " ignore these file types when completing names and in explorer
 set wildignore=.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif
@@ -101,15 +81,6 @@ set wildignore=.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jp
 set tabstop=4                       " number of spaces in a tab
 set shiftwidth=4                    " Number of spaces to use for each step of (auto)indent.  Used for |'cindent'|, |>>|, |<<|, etc.
 set expandtab                       " expand tabs into spaces
-
-" Spell check - highlight spell errors
-"highlight SpellErrors guibg=red guifg=black ctermbg=red ctermfg=black
-highlight SpellBad guibg=red guifg=black ctermbg=red ctermfg=black
-highlight SpellCap guibg=orange guifg=black ctermbg=blue ctermfg=black
-highlight SpellLocal guibg=orange guifg=black ctermbg=blue ctermfg=black
-highlight SpellRare guibg=orange guifg=black ctermbg=blue ctermfg=black
-" toggle spell check with F7
-map <F7> :setlocal spell! spell?<CR>
 
 " search settings
 set incsearch           " Incremental search
@@ -120,7 +91,7 @@ set smartcase           " do not ignore if search pattern has CAPS
 " directory settings
 set nobackup            " do not write backup files
 set noswapfile          " do not write .swp files
-set writebackup         " back up while a file is being written, then discarded
+set nowritebackup         " back up while a file is being written, then discarded
 
 if has("persistent_undo")
   silent !mkdir -vp ~/.backup/vim/undo/ > /dev/null 2>&1
@@ -130,19 +101,217 @@ if has("persistent_undo")
   set undodir=~/.backup/vim/undo/,~/tmp,.
 endif
 
+" Remember last position in file
+"if has("autocmd")
+"  autocmd BufReadPost *
+"    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+"    \   exe "normal g`\"" |
+"    \ endif
+"endif
+
+" Syntax highlighting and linting
+syntax enable
+
 " folding
 if has("folding")
   set foldcolumn=0        " columns for folding
-  set foldmethod=indent
+  set foldmethod=syntax
   set foldlevel=9
   set nofoldenable        "dont fold by default "
 endif
 
-" Remember last position in file
-if has("autocmd")
-  autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
+" =============================================================================
+" PLUGIN CONFIGS
+" =============================================================================
+
+" -----------------------------------------------------------------------------
+" FZF config
+" -----------------------------------------------------------------------------
+if executable('fzf')
 endif
+
+" -----------------------------------------------------------------------------
+" NERDTREE config
+" -----------------------------------------------------------------------------
+" Open a NERDTree automatically when Vim starts
+"autocmd vimenter * NERDTree
+
+" Open a NERDTree automatically when Vim starts if no files were specified
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+" Close Vim if the only window left open is a NERDTree
+"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" NERDTree ignores
+"let NERDTreeIgnore=['bin[[dir]]','target[[dir]]', 'tags[[file]]', '\~$']
+
+" -----------------------------------------------------------------------------
+" EDITORCONFIG config
+" -----------------------------------------------------------------------------
+let g:EditorConfig_exclude_patterns=['fugitive://.*', 'scp://.*']
+
+" -----------------------------------------------------------------------------
+" VIM-AIRLINE config
+" -----------------------------------------------------------------------------
+let g:airline#extensions#tabline#enabled = 1            " displays all buffers when there's only one tab open
+
+" -----------------------------------------------------------------------------
+" KEY MAPPING config
+" NB. Do not put comments on rhs as they are considered part of the rhs
+" -----------------------------------------------------------------------------
+" Set <Space> to a <Nop> so that use of the new leader doesn't move right.
+"nnoremap <Space> <Nop>
+
+" Set leader key
+let mapleader      = ","
+let maplocalleader = ","
+
+" Disable the arrow cursor keys in normal... use h,j,k,l instead!
+nnoremap <Left> <Nop>
+nnoremap <Down> <Nop>
+nnoremap <Up> <Nop>
+nnoremap <Right> <Nop>
+
+"close the current window
+nnoremap <C-c> <C-w>c
+
+" To use `CTRL+{h,j,k,l}` to navigate windows from any mode: >
+inoremap <C-h> <C-\><C-N><C-w>h
+inoremap <C-j> <C-\><C-N><C-w>j
+inoremap <C-k> <C-\><C-N><C-w>k
+inoremap <C-l> <C-\><C-N><C-w>l
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" jk | Escaping!
+inoremap jk <Esc>
+xnoremap jk <Esc>
+cnoremap jk <C-c>
+
+" Remove highlighting in normal mode
+nnoremap <Leader><Leader> :noh<CR>
+
+" ----------------------------------------------------------------------------
+" Buffers
+" ----------------------------------------------------------------------------
+nnoremap ]b :bnext<cr>
+nnoremap [b :bprev<cr>
+
+" ----------------------------------------------------------------------------
+" Tabs
+" ----------------------------------------------------------------------------
+nnoremap ]t :tabn<cr>
+nnoremap [t :tabp<cr>
+
+" ----------------------------------------------------------------------------
+" Files and folders
+" ----------------------------------------------------------------------------
+
+"open NERDTree
+"nnoremap <Leader>n :NERDTreeToggle<CR>
+
+" Fuzzy find with fzf.
+nnoremap <C-p> :FZF<CR>
+
+" Save the current buffer.
+inoremap <Leader>fs <Esc>:w<CR>i
+nnoremap <Leader>fs :w<CR>
+
+" File exit
+nnoremap <Leader>fx :bd<CR>
+
+" Fuzzy find on FZF Buffers
+nnoremap <Leader>p :Buffers<CR>
+
+" ----------------------------------------------------------------------------
+" Insert text
+" ----------------------------------------------------------------------------
+" Quickly insert a timestamp in ISO8601 format
+nnoremap <Leader>ds "=strftime("%Y-%m-%d")<CR>p
+"nnoremap <Leader>ts "=strftime("%F %T%z")<CR>p
+nnoremap <Leader>ts "=strftime("%Y-%m-%dT%H:%M:%SZ")<CR>p
+
+" -----------------------------------------------------------------------------
+" COC.NVIM config
+" -----------------------------------------------------------------------------
+if has('nvim')
+
+    " To map <Esc> to exit terminal-mode: >
+    tnoremap <Esc> <C-\><C-n>
+
+    " To simulate |i_CTRL-R| in terminal-mode: >
+    tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
+
+    " To use `CTRL+{h,j,k,l}` to navigate windows from any mode: >
+    tnoremap <C-h> <C-\><C-N><C-w>h
+    tnoremap <C-j> <C-\><C-N><C-w>j
+    tnoremap <C-k> <C-\><C-N><C-w>k
+    tnoremap <C-l> <C-\><C-N><C-w>l
+
+    " CoC Extentions
+    let g:coc_global_extensions = ['coc-emoji', 'coc-eslint', 'coc-prettier', 'coc-tsserver', 'coc-tslint', 'coc-tslint-plugin', 'coc-css', 'coc-json', 'coc-yaml', 'coc-stylelint', 'coc-xml']
+
+    " Better display for messages
+    set cmdheight=2
+
+    " You will have bad experience for diagnostic messages when it's default 4000.
+    set updatetime=300
+
+    " don't give |ins-completion-menu| messages.
+    set shortmess+=c
+
+    " always show signcolumns
+    set signcolumn=yes
+
+    " Use tab for trigger completion with characters ahead and navigate.
+    " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+    inoremap <silent><expr> <TAB>
+          \ pumvisible() ? "\<C-n>" :
+          \ <SID>check_back_space() ? "\<TAB>" :
+          \ coc#refresh()
+    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+    function! s:check_back_space() abort
+      let col = col('.') - 1
+      return !col || getline('.')[col - 1]  =~# '\s'
+    endfunction
+
+    " Use <c-space> to trigger completion.
+    inoremap <silent><expr> <c-space> coc#refresh()
+
+    " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+    " Coc only does snippet and additional edit on confirm.
+    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+    " Or use `complete_info` if your vim support it, like:
+    " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+    " Use `[g` and `]g` to navigate diagnostics
+    nmap <silent> [g <Plug>(coc-diagnostic-prev)
+    nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+    " Remap keys for gotos
+    nmap <silent> gd <Plug>(coc-definition)
+    nmap <silent> gy <Plug>(coc-type-definition)
+    nmap <silent> gi <Plug>(coc-implementation)
+    nmap <silent> gr <Plug>(coc-references)
+
+    " Use K to show documentation in preview window
+    nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+    function! s:show_documentation()
+      if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+      else
+        call CocAction('doHover')
+      endif
+    endfunction
+
+    " Highlight symbol under cursor on CursorHold
+    autocmd CursorHold * silent call CocActionAsync('highlight')
+
+endif
+
 

@@ -15,7 +15,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'junegunn/vim-plug'                " registered vim-plug as a plugin so that Vim help for vim-plug itself is available (e.g. :help plug-options)
 Plug 'altercation/vim-colors-solarized' " solarized colour scheme
 Plug 'junegunn/seoul256.vim'            " seoul256 colour scheme
-Plug '/usr/local/opt/fzf'               " If installed using Homebrew
+"Plug '/usr/local/opt/fzf'               " If installed using Homebrew
 Plug 'junegunn/fzf.vim'                 " fuzzy file find
 "Plug 'scrooloose/nerdtree'              " directory/file tree
 Plug 'vim-airline/vim-airline'          " status & tabline

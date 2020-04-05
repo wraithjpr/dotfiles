@@ -22,7 +22,7 @@ Plug 'vim-airline/vim-airline'          " status & tabline
 Plug 'tpope/vim-surround'               " easily add, change & delete surroundings in pairs brackets, quotes, XML & HTML tags
 Plug 'tpope/vim-repeat'                 " adds support of . vim command to plugins, eg. vim-surround
 "Plug 'raimondi/delimitmate'             " automatic closing of quotes, parenthesis, brackets, etc.
-Plug 'jiangmiao/auto-pairs'             " Insert or delete brackets, parens, quotes in pair.
+"Plug 'jiangmiao/auto-pairs'             " Insert or delete brackets, parens, quotes in pair.
 Plug 'machakann/vim-highlightedyank'    " Make the yanked region apparent
 Plug 'editorconfig/editorconfig-vim'    " adds support for .editorconfig files
 

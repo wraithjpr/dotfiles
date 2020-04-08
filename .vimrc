@@ -1,5 +1,7 @@
 set nocompatible              " be iMproved, required
 set encoding=utf-8
+filetype plugin indent on
+syntax enable
 
 " =============================================================================
 " Install Vim plugin manager, https://github.com/junegunn/vim-plug
@@ -17,16 +19,14 @@ Plug 'altercation/vim-colors-solarized' " solarized colour scheme
 Plug 'junegunn/seoul256.vim'            " seoul256 colour scheme
 "Plug '/usr/local/opt/fzf'               " If installed using Homebrew
 Plug 'junegunn/fzf.vim'                 " fuzzy file find
-"Plug 'scrooloose/nerdtree'              " directory/file tree
 Plug 'vim-airline/vim-airline'          " status & tabline
 Plug 'tpope/vim-surround'               " easily add, change & delete surroundings in pairs brackets, quotes, XML & HTML tags
 Plug 'tpope/vim-repeat'                 " adds support of . vim command to plugins, eg. vim-surround
-"Plug 'raimondi/delimitmate'             " automatic closing of quotes, parenthesis, brackets, etc.
-"Plug 'jiangmiao/auto-pairs'             " Insert or delete brackets, parens, quotes in pair.
 Plug 'machakann/vim-highlightedyank'    " Make the yanked region apparent
 Plug 'editorconfig/editorconfig-vim'    " adds support for .editorconfig files
 
-if has('nvim')
+"if has('nvim')
+if has('Xnvim')
     Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': { -> coc#util#install()}}
 endif
 
@@ -35,7 +35,6 @@ call plug#end()
 " =============================================================================
 " VIM settings
 " =============================================================================
-filetype plugin indent on
 
 " colour scheme
 set background=dark
@@ -56,11 +55,10 @@ set showcmd                         " Show (partial) command in status line.
 set showmatch                       " Show matching brackets.
 set textwidth=0                     " Do not wrap words (insert)
 set visualbell t_vb=                " use visual bell instead of beeping (no flash)
-set wildmenu                        " enhanced command completion
 set nowrap                          " Do not wrap words (view)
 
 " Behaviour
-set hidden                          " a buffer becomes hidden when it is abandoned
+set hidden                          " a buffer becomes hidden when it is abandoned. Also needed for coc.nvim.
 set noautochdir                     " do not change the current working directory
 set autoindent                      " automatically indent new line
 set autoread                        " automatically read a file changed on disk externally to vim
@@ -71,15 +69,15 @@ set matchpairs+="<:>,=:;"           " The % command also jumps for HTML tags and
 set shell=$SHELL                    " use current shell for shell commands
 set smartindent                     " smart auto-indenting when starting a new line
 set smarttab                        " samrt tabs according to shiftwidth and tabstop
-set splitbelow                      " spawn horizontal splits below instead of above
-set splitright                      " spwan vertical splits to the right instead of to the left
+"set splitbelow                      " spawn horizontal splits below instead of above
+set splitright                      " spawn vertical splits to the right instead of to the left
 
 " ignore these file types when completing names and in explorer
 set wildignore=.svn,CVS,.git,.hg,*.o,*.a,*.class,*.mo,*.la,*.so,*.obj,*.swp,*.jpg,*.png,*.xpm,*.gif
 
 " Tab settings
-set tabstop=4                       " number of spaces in a tab
-set shiftwidth=4                    " Number of spaces to use for each step of (auto)indent.  Used for |'cindent'|, |>>|, |<<|, etc.
+"set tabstop=4                       " number of spaces in a tab
+"set shiftwidth=4                    " Number of spaces to use for each step of (auto)indent.  Used for |'cindent'|, |>>|, |<<|, etc.
 set expandtab                       " expand tabs into spaces
 
 " search settings
@@ -89,9 +87,9 @@ set ignorecase          " Do case insensitive matching
 set smartcase           " do not ignore if search pattern has CAPS
 
 " directory settings
-set nobackup            " do not write backup files
+set nobackup            " do not write backup files. Also needed for coc.nvim.
 set noswapfile          " do not write .swp files
-set nowritebackup         " back up while a file is being written, then discarded
+set nowritebackup       " back up while a file is being written, then discarded. Also needed for coc.nvim.
 
 if has("persistent_undo")
   silent !mkdir -vp ~/.backup/vim/undo/ > /dev/null 2>&1
@@ -108,9 +106,6 @@ endif
 "    \   exe "normal g`\"" |
 "    \ endif
 "endif
-
-" Syntax highlighting and linting
-syntax enable
 
 " folding
 if has("folding")
@@ -131,22 +126,6 @@ if executable('fzf')
 endif
 
 " -----------------------------------------------------------------------------
-" NERDTREE config
-" -----------------------------------------------------------------------------
-" Open a NERDTree automatically when Vim starts
-"autocmd vimenter * NERDTree
-
-" Open a NERDTree automatically when Vim starts if no files were specified
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
-" Close Vim if the only window left open is a NERDTree
-"autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" NERDTree ignores
-"let NERDTreeIgnore=['bin[[dir]]','target[[dir]]', 'tags[[file]]', '\~$']
-
-" -----------------------------------------------------------------------------
 " EDITORCONFIG config
 " -----------------------------------------------------------------------------
 let g:EditorConfig_exclude_patterns=['fugitive://.*', 'scp://.*']
@@ -160,12 +139,10 @@ let g:airline#extensions#tabline#enabled = 1            " displays all buffers w
 " KEY MAPPING config
 " NB. Do not put comments on rhs as they are considered part of the rhs
 " -----------------------------------------------------------------------------
-" Set <Space> to a <Nop> so that use of the new leader doesn't move right.
-"nnoremap <Space> <Nop>
 
 " Set leader key
-let mapleader      = ","
-let maplocalleader = ","
+let mapleader      = "\\"
+let maplocalleader = "\\"
 
 " Disable the arrow cursor keys in normal... use h,j,k,l instead!
 nnoremap <Left> <Nop>
@@ -186,42 +163,15 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-" jk | Escaping!
-inoremap jk <Esc>
-xnoremap jk <Esc>
-cnoremap jk <C-c>
-
 " Remove highlighting in normal mode
 nnoremap <Leader><Leader> :noh<CR>
-
-" ----------------------------------------------------------------------------
-" Buffers
-" ----------------------------------------------------------------------------
-nnoremap ]b :bnext<cr>
-nnoremap [b :bprev<cr>
-
-" ----------------------------------------------------------------------------
-" Tabs
-" ----------------------------------------------------------------------------
-nnoremap ]t :tabn<cr>
-nnoremap [t :tabp<cr>
 
 " ----------------------------------------------------------------------------
 " Files and folders
 " ----------------------------------------------------------------------------
 
-"open NERDTree
-"nnoremap <Leader>n :NERDTreeToggle<CR>
-
 " Fuzzy find with fzf.
 nnoremap <C-p> :FZF<CR>
-
-" Save the current buffer.
-inoremap <Leader>fs <Esc>:w<CR>i
-nnoremap <Leader>fs :w<CR>
-
-" File exit
-nnoremap <Leader>fx :bd<CR>
 
 " Fuzzy find on FZF Buffers
 nnoremap <Leader>p :Buffers<CR>
@@ -237,7 +187,7 @@ nnoremap <Leader>ts "=strftime("%Y-%m-%dT%H:%M:%SZ")<CR>p
 " -----------------------------------------------------------------------------
 " COC.NVIM config
 " -----------------------------------------------------------------------------
-if has('nvim')
+if has('Xnvim')
 
     " To map <Esc> to exit terminal-mode: >
     tnoremap <Esc> <C-\><C-n>
@@ -267,7 +217,8 @@ if has('nvim')
     set signcolumn=yes
 
     " Use tab for trigger completion with characters ahead and navigate.
-    " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+    " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+    " other plugin before putting this into your config.
     inoremap <silent><expr> <TAB>
           \ pumvisible() ? "\<C-n>" :
           \ <SID>check_back_space() ? "\<TAB>" :
@@ -282,23 +233,26 @@ if has('nvim')
     " Use <c-space> to trigger completion.
     inoremap <silent><expr> <c-space> coc#refresh()
 
-    " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-    " Coc only does snippet and additional edit on confirm.
-    inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-    " Or use `complete_info` if your vim support it, like:
-    " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+    " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+    " position. Coc only does snippet and additional edit on confirm.
+    if has('patch8.1.1068')
+      " Use `complete_info` if your (Neo)Vim version supports it.
+      inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+    else
+      imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+    endif
 
     " Use `[g` and `]g` to navigate diagnostics
     nmap <silent> [g <Plug>(coc-diagnostic-prev)
     nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
-    " Remap keys for gotos
+    " GoTo code navigation.
     nmap <silent> gd <Plug>(coc-definition)
     nmap <silent> gy <Plug>(coc-type-definition)
     nmap <silent> gi <Plug>(coc-implementation)
     nmap <silent> gr <Plug>(coc-references)
 
-    " Use K to show documentation in preview window
+    " Use K to show documentation in preview window.
     nnoremap <silent> K :call <SID>show_documentation()<CR>
 
     function! s:show_documentation()
@@ -309,9 +263,25 @@ if has('nvim')
       endif
     endfunction
 
-    " Highlight symbol under cursor on CursorHold
+    " Highlight the symbol and its references when holding the cursor.
     autocmd CursorHold * silent call CocActionAsync('highlight')
 
-endif
+    " Symbol renaming.
+    nmap <leader>rn <Plug>(coc-rename)
 
+    " Formatting selected code.
+    xmap <leader>f  <Plug>(coc-format-selected)
+    nmap <leader>f  <Plug>(coc-format-selected)
+
+    " Add `:Format` command to format current buffer.
+    command! -nargs=0 Format :call CocAction('format')
+
+    " Add `:Fold` command to fold current buffer.
+    command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+    " Add `:OR` command for organize imports of the current buffer.
+    command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+
+endif
 

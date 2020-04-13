@@ -116,7 +116,7 @@ endif
 " FZF config
 " -----------------------------------------------------------------------------
 if executable('fzf')
-  let g:fzf_command_prefix = 'fzf'
+  let g:fzf_command_prefix = 'Fzf'
 endif
 
 " -----------------------------------------------------------------------------
@@ -182,6 +182,10 @@ nnoremap <Leader>ts "=strftime("%Y-%m-%dT%H:%M:%SZ")<CR>p
 " Terminal mode
 " ----------------------------------------------------------------------------
 if has('nvim')
+
+    " To be in insert mode when entering a terminal buffer
+    autocmd TermOpen term://* startinsert
+    autocmd BufEnter term://* startinsert
 
     " To map <Esc> to exit terminal-mode: >
     tnoremap <Esc> <C-\><C-N>

@@ -17,6 +17,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'junegunn/vim-plug'                " registered vim-plug as a plugin so that Vim help for vim-plug itself is available (e.g. :help plug-options)
 Plug 'altercation/vim-colors-solarized' " solarized colour scheme
 Plug 'junegunn/seoul256.vim'            " seoul256 colour scheme
+"Plug '/usr/bin/fzf'                     " If installed using dnf
 "Plug '/usr/local/opt/fzf'               " If installed using Homebrew
 Plug 'junegunn/fzf.vim'                 " fuzzy file find
 Plug 'vim-airline/vim-airline'          " status & tabline
@@ -59,17 +60,17 @@ set nowrap                          " Do not wrap words (view)
 
 " Behaviour
 set hidden                          " a buffer becomes hidden when it is abandoned. Also needed for coc.nvim.
-set noautochdir                     " do not change the current working directory
+"set noautochdir                     " do not change the current working directory
 set autoindent                      " automatically indent new line
 set autoread                        " automatically read a file changed on disk externally to vim
 set backspace=indent,eol,start
 set completeopt=menu,menuone,preview
 set guioptions-=T                   " disable toolbar"
-set matchpairs+="<:>,=:;"           " The % command also jumps for HTML tags and JavaScript assignment syntax
+set matchpairs+=<:>,=:;             " the % command also jumps for HTML tags and JavaScript assignment syntax
 set shell=$SHELL                    " use current shell for shell commands
 set smartindent                     " smart auto-indenting when starting a new line
 set smarttab                        " samrt tabs according to shiftwidth and tabstop
-"set splitbelow                      " spawn horizontal splits below instead of above
+set splitbelow                      " spawn horizontal splits below instead of above
 set splitright                      " spawn vertical splits to the right instead of to the left
 
 " ignore these file types when completing names and in explorer
@@ -99,14 +100,6 @@ if has("persistent_undo")
   set undodir=~/.backup/vim/undo/,~/tmp,.
 endif
 
-" Remember last position in file
-"if has("autocmd")
-"  autocmd BufReadPost *
-"    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-"    \   exe "normal g`\"" |
-"    \ endif
-"endif
-
 " folding
 if has("folding")
   set foldcolumn=0        " columns for folding
@@ -123,6 +116,7 @@ endif
 " FZF config
 " -----------------------------------------------------------------------------
 if executable('fzf')
+  let g:fzf_command_prefix = 'fzf'
 endif
 
 " -----------------------------------------------------------------------------
@@ -184,13 +178,14 @@ nnoremap <Leader>ds "=strftime("%Y-%m-%d")<CR>p
 "nnoremap <Leader>ts "=strftime("%F %T%z")<CR>p
 nnoremap <Leader>ts "=strftime("%Y-%m-%dT%H:%M:%SZ")<CR>p
 
-" -----------------------------------------------------------------------------
-" COC.NVIM config
-" -----------------------------------------------------------------------------
-if has('Xnvim')
+" ----------------------------------------------------------------------------
+" Terminal mode
+" ----------------------------------------------------------------------------
+if has('nvim')
 
     " To map <Esc> to exit terminal-mode: >
-    tnoremap <Esc> <C-\><C-n>
+    tnoremap <Esc> <C-\><C-N>
+    tnoremap <C-[> <C-\><C-N>
 
     " To simulate |i_CTRL-R| in terminal-mode: >
     tnoremap <expr> <C-R> '<C-\><C-N>"'.nr2char(getchar()).'pi'
@@ -200,6 +195,13 @@ if has('Xnvim')
     tnoremap <C-j> <C-\><C-N><C-w>j
     tnoremap <C-k> <C-\><C-N><C-w>k
     tnoremap <C-l> <C-\><C-N><C-w>l
+
+endif
+
+" -----------------------------------------------------------------------------
+" COC.NVIM config
+" -----------------------------------------------------------------------------
+if has('Xnvim')
 
     " CoC Extentions
     let g:coc_global_extensions = ['coc-emoji', 'coc-eslint', 'coc-prettier', 'coc-tsserver', 'coc-tslint', 'coc-tslint-plugin', 'coc-css', 'coc-json', 'coc-yaml', 'coc-stylelint', 'coc-xml']
@@ -281,7 +283,6 @@ if has('Xnvim')
 
     " Add `:OR` command for organize imports of the current buffer.
     command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
 
 endif
 

@@ -59,3 +59,6 @@ complete -C '/usr/local/bin/aws_completer' aws
 # bash completion for Pandoc
 eval "$(pandoc --bash-completion)"
 
+# bash completion for Stack (Haskell)
+eval "$(stack --bash-completion-script stack)"
+

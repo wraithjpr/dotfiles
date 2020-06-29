@@ -66,7 +66,7 @@ ctlkey = "Control"
 awful.layout.layouts = {
     awful.layout.suit.floating,
     awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
+    --awful.layout.suit.tile.left,
     --awful.layout.suit.tile.bottom,
     --awful.layout.suit.tile.top,
     awful.layout.suit.fair,
@@ -173,8 +173,8 @@ awful.screen.connect_for_each_screen(function(s)
 
     -- Each screen has its own tag table.
     local l = awful.layout.suit
-    local names = { "code", "www", "mail", "chat", "media", "zoom", "7", "8", "9" }
-    local layouts = { l.fair, l.max, l.max, l.fair, l.fair, l.max, l.fair, l.fair, l.fair }
+    local names = { "1 code", "2 www", "3 mail", "4 chat", "5 media", "6 zoom", "7", "8", "9" }
+    local layouts = { l.left, l.max, l.max, l.fair, l.max, l.max, l.fair, l.fair, l.fair }
     awful.tag(names, s, layouts)
 
     -- Create a promptbox for each screen
@@ -473,6 +473,8 @@ awful.rules.rules = {
         },
         class = {
           "Arandr",
+          "Pavucontrol",
+          "Authy Desktop",
           "Blueman-manager",
           "Gpick",
           "Kruler",
@@ -501,11 +503,14 @@ awful.rules.rules = {
     },
 
     -- Set Firefox and Google Chrome to have no titlebar
-    { rule_any = { class = { "Firefox", "Google-chrome" }, role = { "browser" } }, properties = { titlebars_enabled = false } }
+    { rule_any = { class = { "Firefox", "Google-chrome" }, role = { "browser" } }, properties = { titlebars_enabled = false } },
 
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { screen = 1, tag = "2" } },
+
+    -- Set Authy to always map on the tag named "9" on screen 1.
+    { rule = { class = "Authy Desktop" }, properties = { screen = 1, tag = "9" } }
 }
 -- }}}
 

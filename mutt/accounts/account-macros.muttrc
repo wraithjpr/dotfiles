@@ -1,0 +1,35 @@
+#-----------------------------------------------------------------------------------------
+## Account-dependent macros
+# Depends on account short cuts !, = and + having been set prior to sourcing this.
+# That is, set folder and set spoolfile for a specific account.
+#-----------------------------------------------------------------------------------------
+# Go to folder...
+macro index,pager g0 "<sync-mailbox><change-folder>!<enter>"            "open the account root"
+macro index,pager gi "<sync-mailbox><change-folder>+INBOX<enter>"       "open Inbox"
+macro index,pager ga "<sync-mailbox><change-folder>+Archive<enter>"     "open Archive"
+macro index,pager gd "<sync-mailbox><change-folder>+Drafts<enter>"      "open Drafts"
+macro index,pager gs "<sync-mailbox><change-folder>+Sent<enter>"        "open Sent"
+macro index,pager gt "<sync-mailbox><change-folder>+Trash<enter>"       "open Trash"
+
+# For explanation of this set of macros see https://ryanlue.com/posts/2017-05-22-autosync-mutt
+#macro index,pager    ss  ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015<save-message>?"                                                                                                                                     "save message to a mailbox"
+#macro index          sat ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015'q<untag-pattern>.\\015\"\015<mark-message>q<enter><untag-pattern>.<enter><tag-thread><tag-prefix-cond><save-message>?"                                    "save thread to a mailbox"
+#macro pager          sat ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015<display-message>\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015'q<untag-pattern>.\\015<display-message>\"\015<exit><mark-message>q<enter><untag-pattern>.<enter><tag-thread><tag-prefix><save-message>?" "save thread to a mailbox"
+#macro index          \;s ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015<tag-prefix-cond><save-message>?"                                                                                                                    "save tagged messages to a mailbox"
+#macro index,pager    cc  ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015<copy-message>?"                                                                                                                                     "copy message to a mailbox"
+#macro index          cat ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015'q<untag-pattern>.\\015\"\015<mark-message>q<enter><untag-pattern>.<enter><tag-thread><tag-prefix-cond><copy-message>?"                                    "copy thread to a mailbox"
+#macro pager          cat ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015<display-message>\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015'q<untag-pattern>.\\015<display-message>\"\015<exit><mark-message>q<enter><untag-pattern>.<enter><tag-thread><tag-prefix><copy-message>?" "copy thread to a mailbox"
+#macro index          \;c ":macro browser \\015 \"\<select-entry\>\<sync-mailbox\>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015:macro browser q \"<exit>:bind browser \\\\015 select-entry\\015:bind browser q exit\\015\"\015<tag-prefix-cond><copy-message>?"                                                                                                                    "copy tagged messages to a mailbox"
+
+#macro index,pager ]a "<save-message>+Archive<enter>"             "archive a message"
+#macro index,pager ]i "<save-message>+INBOX<enter>"               "move a message back to Inbox"
+#macro index,pager ]j \
+#  "<enter-command>set my_old_resolve=\$resolve noresolve<enter>\
+#  <tag-prefix><clear-flag>N<enter-command>set resolve=\$my_old_resolve<enter>\
+#  <save-message>+Spam<enter>" \
+#  "mark as read and discard to junk folder"
+
+# See https://wiki.archlinux.org/index.php/Mutt#Archive_treated_e-mails
+#macro index \;] "<tag-prefix><save-message>+Archive<enter>" "archive all tagged messages"
+#macro index \;[ "<tag-prefix><save-message>+INBOX<enter>" "move all tagged messages back to Inbox"
+

@@ -1,0 +1,28 @@
+# Mutt account config for gandi.net email service
+# See https://wiki.archlinux.org/index.php/Mutt#Multiple_accounts
+set folder = "~/Mail/gandi"                             # This has the shortcut '+' or '='
+
+#-----------------------------------------------------------------------------------------
+## Receive options
+#  isync is used to sync email, so see ~/.mbsyncrc for incoming email config
+#-----------------------------------------------------------------------------------------
+set spoolfile = "+INBOX"      # This has the shortcut '!'
+set mbox = "+Archive"
+set postponed = "+Drafts"
+set record = "+Sent"
+set trash = "+Trash"
+
+#-----------------------------------------------------------------------------------------
+## Send options
+#  msmtp is used to send email, so see ~/.config/msmtp/config for outgoing email config
+#-----------------------------------------------------------------------------------------
+set sendmail = "/usr/bin/msmtp --read-envelope-from --account=gandi -- "
+set from = "james@the-wraiths.uk"
+
+#-----------------------------------------------------------------------------------------
+## Account-dependent macros
+#-----------------------------------------------------------------------------------------
+#macro index $$ "<sync-mailbox><shell-escape>mbsync gandi<enter>" "sync mail remotely with gandi.net"
+
+#source "~/.config/mutt/accounts/account-macros.muttrc"
+

@@ -1,0 +1,125 @@
+# Adapted from /usr/share/doc/mutt/samples/sample.muttrc-starter
+# See https://wiki.archlinux.org/index.php/Mutt and http://www.mutt.org/doc/manual/#quickconfig
+#
+# I use multiple email accounts on different email providers.
+# Account-specific properties are configured in their respective files and sourced in.
+# See https://wiki.archlinux.org/index.php/Mutt#Multiple_accounts
+#
+# Also see, for tips and inspiration:
+#     https://stevelosh.com/blog/2012/10/the-homely-mutt/
+#     https://webgefrickel.de/blog/a-modern-mutt-setup-part-two
+#
+# This is laid out according to Chapter 2 of Michael Elkins's manual 'The Mutt E-mail Client', here:
+#   http://www.mutt.org/doc/manual/
+#  Mutt is a complex thing to configure, so laying my config out this way helps me understand it in the context of that manual.
+#  Out-of-the-box, the key bindings seem biased towards emacs, which is alien to me. I have significantly altered them to be
+#  aligned with my Vim-oriented mind.
+#
+
+#----------------------------------------------------------------------------------------------------------------
+## Paths
+#----------------------------------------------------------------------------------------------------------------
+set certificate_file = "/etc/ssl/certs/ca-certificates.crt"
+set header_cache = "~/.cache/mutt/hcache"
+set mailcap_path = "~/.config/mutt/.mailcap"
+set tmpdir = "/tmp"
+
+#----------------------------------------------------------------------------------------------------------------
+## General options
+#----------------------------------------------------------------------------------------------------------------
+set mbox_type = "Maildir"
+set charset = "utf-8"
+set quit = "ask-yes"
+
+#----------------------------------------------------------------------------------------------------------------
+## 2. Screens and Menus
+#----------------------------------------------------------------------------------------------------------------
+
+##     2.1. Index
+##     2.2. Pager
+##     2.3. File Browser
+##     2.4. Sidebar
+##     2.5. Help
+##     2.6. Compose Menu
+##     2.7. Alias Menu
+##     2.8. Attachment Menu
+
+#----------------------------------------------------------------------------------------------------------------
+## 3. Moving Around in Menus
+#----------------------------------------------------------------------------------------------------------------
+
+#----------------------------------------------------------------------------------------------------------------
+## 4. Editing Input Fields
+#----------------------------------------------------------------------------------------------------------------
+
+##     4.1. Introduction
+##     4.2. History
+
+#----------------------------------------------------------------------------------------------------------------
+## 5. Reading Mail
+#----------------------------------------------------------------------------------------------------------------
+
+##     5.1. The Message Index
+##     5.2. The Pager
+##     5.3. Threaded Mode
+##     5.4. Miscellaneous Functions
+
+unset move                              # Read messages will not automatically be archived
+
+#----------------------------------------------------------------------------------------------------------------
+## 6. Sending Mail
+#----------------------------------------------------------------------------------------------------------------
+
+##     6.1. Introduction
+##     6.2. Editing the Message Header
+##     6.3. Sending Cryptographically Signed/Encrypted Messages
+##     6.4. Sending Format=Flowed Messages
+##     6.5. Background Editing
+
+set realname = "James Wraith"
+
+#----------------------------------------------------------------------------------------------------------------
+## 7. Forwarding and Bouncing Mail
+#----------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------
+## 8. Postponing Mail
+#----------------------------------------------------------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------
+## 9. Encryption and Signing
+#----------------------------------------------------------------------------------------------------------------
+
+##     9.1. OpenPGP Configuration
+##     9.2. S/MIME Configuration
+
+#----------------------------------------------------------------------------------------------------------------
+## Key bindings - Vim-like
+#----------------------------------------------------------------------------------------------------------------
+source ~/.config/mutt/vim-keys.muttrc
+
+#================================================================================================================
+#----------------------------------------------------------------------------------------------------------------
+## Account-specific configuration
+# Here we use the $folder variable that has just been set in the sourced file.
+# We must set its folder hook right now otherwise the 'folder' variable will change in the next sourced file.
+#----------------------------------------------------------------------------------------------------------------
+
+## Account 1 - Proton Mail
+# TODO - add the protonmail config
+
+## Account 2 - Gmail
+#folder-hook ~/Mail/gmail/* 'source ~/.config/mutt/gmail.muttrc'
+#macro index,pager g2 "<sync-mailbox><change-folder>~/Mail/gmail/INBOX<enter>"                                  "switch context to Gmail Inbox"
+#macro index       $2 "<sync-mailbox><change-folder>~/Mail/gmail/INBOX<enter><shell-escape>mbsync gmail<enter>" "sync mail remotely with Gmail"
+
+## Account 3 - gandi.net
+folder-hook ~/Mail/gandi/* 'source ~/.config/mutt/accounts/gandi.muttrc'
+#macro index,pager g3 "<sync-mailbox><change-folder>~/Mail/gandi/INBOX<enter>"                                  "switch context to gandi.net Inbox"
+#macro index       $3 "<sync-mailbox><change-folder>~/Mail/gandi/INBOX<enter><shell-escape>mbsync gandi<enter>" "sync mail remotely with gandi.net"
+
+# Default: use Gmail
+#source ~/.config/mutt/gmail.muttrc
+# Default: use gandi.net
+source ~/.config/mutt/accounts/gandi.muttrc
+
+#================================================================================================================
+

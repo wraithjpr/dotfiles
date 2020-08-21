@@ -10,15 +10,20 @@
 ! $ xrdb -merge ~/.Xresources
 !
 
-Xft.dpi: 96
-Xft.hintstyle: hintfull
-!Xft.hintstyle: hintmedium
-Xft.hinting: true
+!Xft.dpi: 96
 
-!Xft.antialias: true
-!Xft.rgba: rgb
-!Xft.autohint: true
-!Xft.lcdfilter: lcdfilter
+Xft.autohint: false
+Xft.lcdfilter: lcdnone
+!Xft.hintstyle: hintfull
+!Xft.hintstyle: hintmedium
+Xft.hintstyle: hintslight
+Xft.hinting: true
+Xft.antialias: true
+Xft.rgba: rgb
+
+!----------------------------------------------------------------------
+!! XTerm
+!----------------------------------------------------------------------
 
 XTerm.termName: xterm-256color
 
@@ -26,29 +31,24 @@ XTerm*loginShell: true
 
 !! KEY BINDINGS
 
-XTerm*appkeypadDefault: true
-!XTerm*backarrowKey: true
-!XTerm*deleteIsDEL: true
 XTerm*metaSendsEscape: true
+XTerm*appkeypadDefault: true
 
-XTerm.vt100.translations: #override \n\
+XTerm*translations: #override \n\
   Ctrl <Key> minus: smaller-vt-font() \n\
   Ctrl <Key> plus: larger-vt-font() \n\
   Ctrl <Key> 0: set-vt-font(d) \n\
-  Shift <KeyPress> Insert: insert-selection(CLIPBOARD) \n\
-  Ctrl Shift <Key> V: insert-selection(CLIPBOARD) \n\
-  Ctrl Shift <Key> C: copy-selection(CLIPBOARD)
-
+  Ctrl Shift <Key> C: copy-selection(CLIPBOARD) \n\
+  Ctrl Shift <Key> V: insert-selection(CLIPBOARD)
 
 !! COPY, CUT & PASTE
+
 ! Only select text
 XTerm*highlightSelection: true
 ! Remove trailing spaces
 XTerm*trimSelection: true
-
 ! double-click to select whole URLs
 XTerm*charClass: 33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
-
 ! use Ctrl+Shift+c and Ctrl+Shift+v as gnome-terminal
 XTerm*selectToClipboard: true
 
@@ -58,109 +58,74 @@ XTerm*saveLines: 4096
 XTerm*scrollBar: false
 XTerm*jumpScroll: true
 XTerm*fastScroll: true
-! Do not scroll when there is new output e.g. tail -f /var/syslog
-XTerm*scrollTtyOutput: false
 ! scroll in relation to buffer (with mouse scroll or Shift+Page Up)
 XTerm*scrollWithBuffer: true
 ! scroll back to the bottom on keypress
 XTerm*scrollTtyKeypress: true
 
+!----------------------------------------------------------------------
 !! FONTS
-
-XTerm*utf8: 2
-XTerm*locale: true
+!----------------------------------------------------------------------
 
 ! Truetype fonts
-XTerm*renderFont: true
-!XTerm*faceName: Monospace
-!XTerm*faceName: Source Code Pro Medium
-!XTerm*faceName: DejaVu Sans Mono
-!XTerm*faceName: mononoki
-XTerm*faceName: mononoki Nerd Font
-!XTerm*faceName: mononoki Nerd Font Mono
+*renderFont: true
+!*faceName: Monospace
+!*faceName: Source Code Pro Medium
+!*faceName: DejaVu Sans Mono
+!*faceName: Fira Code
+*faceName: Fira Mono
+!*faceName: mononoki
+!*faceName: mononoki Nerd Font
+
 ! default
-XTerm*faceSize: 12
+*faceSize: 12
+*scaleheight: 1.01
+*cursorBlink: true
 
-
+!----------------------------------------------------------------------
 !! COLORS
+! See colour names at:
+!     /usr/share/nvim/runtime/rgb.txt; and
+!     /usr/share/vim/vim82/rgb.txt
+!----------------------------------------------------------------------
 
-!*background: #292d3e
-!*foreground: #bbc5ff
-!*cursorColor: #bbc5ff
-!*cursorBlink: false
-!*color0:       #101010
-!*color1:       #f07178
-!*color2:       #c3e88d
-!*color3:       #ffcb6b
-!*color4:       #82aaff
-!*color5:       #c792ea
-!*color6:       #89ddff
-!*color7:       #d0d0d0
-!*color8:       #434758
-!*color9:       #ff8b92
-!*color10:      #ddffa7
-!*color11:      #ffe585
-!*color12:      #9cc4ff
-!*color13:      #e1acff
-!*color14:      #a3f7ff
-!*color15:      #ffffff
+*colorBDMode: true
+*colorULMode: true
+*colorITMode: true
 
-!! Alternative scheme
+! Use defaults but tone down the default black text on a white background.
+!*foreground: rgb:D3/DA/E3
+*foreground: rgb:B3/BA/C3
+*background: rgb:1D/1D/1F
 
-!*background: rgb:00/00/00
-!*foreground: rgb:ff/ff/ff
-!*cursorColor: rgb:ff/ff/ff
-!*cursorBlink: false
-!*color0:     rgb:00/00/00
-!*color1:     rgb:d3/62/65
-!*color2:     rgb:ae/ce/91
-!*color3:     rgb:e7/e1/8c
-!*color4:     rgb:7a/7a/b0
-!*color5:     rgb:96/3c/59
-!*color6:     rgb:41/81/79
-!*color7:     rgb:be/be/be
-!*color8:     rgb:66/66/66
-!*color9:     rgb:ef/81/71
-!*color10:    rgb:e5/f7/79
-!*color11:    rgb:ff/f7/96
-!*color12:    rgb:41/86/be
-!*color13:    rgb:ef/9e/be
-!*color14:    rgb:71/be/be
-!*color15:    rgb:ff/ff/ff
+! Fake a dark mode.
+!XTerm*reverseVideo: true
 
 !! PaperColor scheme - consistent with my Vim scheme
+! See https://github.com/NLKNguyen/papercolor-theme/blob/master/colors/PaperColor.vim
 ! https://image-color.com/color-picker.html is useful
-
-! disable bold font faces, instead make text light blue.
-XTerm*colorBDMode: true
-! disable underlined text, instead make it white.
-XTerm*colorULMode: true
-! similarly use colorIT for italics
-XTerm*colorITMode: true
-
-*background: #1c1c1c
-*foreground : #5f8787
-*colorBD: #a0e4e4
-*colorIT: #735f87
-*colorUL: #875f5f
-*cursorColor: #80b5b5
-*cursorBlink: true
-*color0 : #1c1c1c
-*color1 : #af005f
-*color2 : #5faf00
-*color3 : #d7af5f
-*color4 : #5fafd7
-*color5 : #808080
-*color6 : #d7875f
-*color7 : #d0d0d0
-*color8 : #585858
-*color9 : #5faf5f
-*color10 : #afd700
-*color11 : #af87d7
-*color12 : #ffaf00
-*color13 : #ff5faf
-*color14 : #00afaf
-*color15 : #5f8787
-*color16 : #5fafd7
-*color17 : #d7af00
+!*foreground : #5f8787
+!*background: #1d1d1f
+!*colorBD: #a0e4e4
+!*colorIT: #735f87
+!*colorUL: #875f5f
+!*cursorColor: #80b5b5
+!*color0 : #1c1c1c
+!*color1 : #af005f
+!*color2 : #5faf00
+!*color3 : #d7af5f
+!*color4 : #5fafd7
+!*color5 : #808080
+!*color6 : #d7875f
+!*color7 : #d0d0d0
+!*color8 : #585858
+!*color9 : #5faf5f
+!*color10 : #afd700
+!*color11 : #af87d7
+!*color12 : #ffaf00
+!*color13 : #ff5faf
+!*color14 : #00afaf
+!*color15 : #5f8787
+!*color16 : #5fafd7
+!*color17 : #d7af00
 

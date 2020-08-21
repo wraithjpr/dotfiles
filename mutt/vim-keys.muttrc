@@ -1,0 +1,688 @@
+#------------------------------------------------------------
+# Vi Key Bindings
+# See http://www.mutt.org/doc/manual/#functions
+#
+# Usage:
+#     bind map key function
+#
+# map value is from set [generic, alias, attach, browser, editor, index, compose, pager, pgp, smime, postpone, query, mix]
+#
+# Template:
+#bind generic,alias,attach,browser,editor,index,compose,pager,pgp,smime,postpone,query key    noop
+#bind generic,editor,pager     key    noop
+#
+# Use <C-g> instead of <C-c> and <C-[>... mutt works the emacs way!
+#
+# See https://ryanlue.com/posts/2017-05-21-mutt-the-vim-way
+#
+#------------------------------------------------------------
+#----------------------------------------------------------------------------------------------------------------
+##4.1. Generic Menu
+#----------------------------------------------------------------------------------------------------------------
+# The generic menu is not a real menu, but specifies common functions (such as movement) available in all menus 
+# except for pager and editor. Changing settings for this menu will affect the default bindings for all menus.
+##Table 9.2. Default Generic Menu Bindings
+#| Vim-like    | Function                    | Default Key | Description                                         |
+#| --------    | --------                    | ----------- | -----------                                         |
+#| H           | <top-page>                  | H           | move to the top of the page                         |
+#| j           | <next-entry>                | j           | move to the next entry                              |
+#| k           | <previous-entry>            | k           | move to the previous entry                          |
+#| L           | <bottom-page>               | L           | move to the bottom of the page                      |
+#| ^L          | <refresh>                   | ^L          | clear and redraw the screen                         |
+#| M           | <middle-page>               | M           | move to the middle of the page                      |
+#| n           | <search-next>               | n           | search for next match                               |
+#| q           | <exit>                      | q           | exit this menu                                      |
+#| tt          | <tag-entry>                 | t           | tag the current entry                               |
+#| ^F          | <next-page>                 | z           | move to the next page                               |
+#| ^B          | <previous-page>             | Z           | move to the previous page                           |
+#| G           | <last-entry>                | *           | move to the last entry                              |
+#| gg          | <first-entry>               | =           | move to the first entry                             |
+#|             | <enter-command>             | :           | enter a muttrc command                              |
+#| ^E          | <next-line>                 | >           | scroll down one line                                |
+#| ^Y          | <previous-line>             | <           | scroll up one line                                  |
+#| ^U          | <half-up>                   | [           | scroll up 1/2 page                                  |
+#| ^D          | <half-down>                 | ]           | scroll down 1/2 page                                |
+#| h           | <help>                      | ?           | this screen                                         |
+#|             | <tag-prefix>                | ;           | apply next function to tagged messages              |
+#|             | <tag-prefix-cond>           |             | apply next function ONLY to tagged messages         |
+#|             | <end-cond>                  |             | end of conditional execution (noop)                 |
+#|             | <shell-escape>              | !           | invoke a command in a subshell                      |
+#|             | <select-entry>              | MUTT_ENTER_S| select the current entry                            |
+#| /           | <search>                    | /           | search for a regular expression                     |
+#| ?           | <search-reverse>            | Esc /       | search backwards for a regular expression           |
+#| N           | <search-opposite>           |             | search for next match in opposite direction         |
+#|             | <jump>                      |             | jump to an index number                             |
+#| zt          | <current-top>               |             | move entry to top of screen                         |
+#| zz          | <current-middle>            |             | move entry to middle of screen                      |
+#| zb          | <current-bottom>            |             | move entry to bottom of screen                      |
+#|             | <error-history>             |             | display recent history of error messages            |
+#|             | <what-key>                  |             | display the keycode for a key press                 |
+#|             | <check-stats>               |             | calculate message statistics for all mailboxes      |
+
+bind generic t noop
+bind generic tt tag-entry
+bind generic z noop
+bind generic \Cf next-page
+bind generic Z noop
+bind generic \Cb previous-page
+bind generic * noop
+bind generic G last-entry
+bind generic = noop
+bind generic gg first-entry
+bind generic > noop
+bind generic \Ce next-line
+bind generic < noop
+bind generic \Cy previous-line
+bind generic [ noop
+bind generic \Cu half-up
+bind generic ] noop
+bind generic \Cd half-down
+bind generic ? noop
+bind generic h help
+bind generic ! noop
+bind generic <Esc>/ noop
+bind generic ? search-reverse
+bind generic zt current-top
+bind generic zz current-middle
+bind generic zb current-bottom
+
+#----------------------------------------------------------------------------------------------------------------
+##4.2. Index Menu
+#----------------------------------------------------------------------------------------------------------------
+##Table 9.3. Default Index Menu Bindings
+#| Vim-like    | Function                    | Default Key | Description                                         |
+#| --------    | --------                    | ----------- | -----------                                         |
+#|            x| <create-alias>              | a           | create an alias from a message sender               |
+#|            x| <autocrypt-acct-menu>       | A           | manage autocrypt accounts                           |
+#|            x| <background-compose-menu>   | B           | list and select backgrounded compose sessions       |
+#| bb          | <bounce-message>            | b           | remail a message to another user                    |
+#| #T          | <break-thread>              | #           | break the thread in two                             |
+#|            x| <browse-mailboxes>          | y           | select a new mailbox from the browser               |
+#|             | <browse-mailboxes-readonly> |             | select a new mailbox from the browser read only mode|
+#|            x| <change-folder>             | c           | open a different folder                             |
+#|            x| <change-folder-readonly>    | Esc c       | open a different folder in read only mode           |
+#|             | <next-unread-mailbox>       |             | open next mailbox with new mail                     |
+#| zo or zc    | <collapse-thread>           | Esc v       | collapse/uncollapse current thread                  |
+#| zO or zC    | <collapse-all>              | Esc V       | collapse/uncollapse all threads                     |
+#|             | <compose-to-sender>         |             | compose new message to the current message sender   |
+#| yy          | <copy-message>              | C           | copy a message to a file/mailbox                    |
+#|            x| <decode-copy>               | Esc C       | make decoded (text/plain) copy                      |
+#|            x| <decode-save>               | Esc s       | make decoded copy (text/plain) and delete           |
+#| dd          | <delete-message>            | d           | delete the current entry                            |
+#| d~          | <delete-pattern>            | D           | delete messages matching a pattern                  |
+#| dT          | <delete-thread>             | ^D          | delete all messages in thread                       |
+#|            x| <delete-subthread>          | Esc d       | delete all messages in subthread                    |
+#|            x| <edit>                      | e           | edit the raw message                                |
+#|            x| <edit-label>                | Y           | add, change, or delete a message's label            |
+#|            x| <edit-type>                 | ^E          | edit attachment content type                        |
+#| ff          | <forward-message>           | f           | forward a message with comments                     |
+#| !!          | <flag-message>              | F           | toggle a message's 'important' flag                 |
+#| ra          | <group-chat-reply>          |             | reply to all recipients preserving To/Cc            |
+#| rg          | <group-reply>               | g           | reply to all recipients                             |
+#|            x| <fetch-mail>                | G           | retrieve mail from POP server                       |
+#|             | <imap-fetch-mail>           |             | force retrieval of mail from IMAP server            |
+#|             | <imap-logout-all>           |             | logout from all IMAP servers                        |
+#|            x| <display-toggle-weed>       | h           | display message and toggle header weeding           |
+#|            x| <next-undeleted>            | j           | move to the next undeleted message                  |
+#|            x| <previous-undeleted>        | k           | move to the previous undeleted message              |
+#| ~           | <limit>                     | l           | show only messages matching a pattern               |
+#| &           | <link-threads>              | &           | link tagged message to the current one              |
+#| rl          | <list-reply>                | L           | reply to specified mailing list                     |
+#| m           | <mail>                      | m           | compose a new mail message                          |
+#|            x| <toggle-new>                | N           | toggle a message's 'new' flag                       |
+#|            x| <toggle-write>              | %           | toggle whether the mailbox will be rewritten        |
+#| J           | <next-thread>               | ^N          | jump to the next thread                             |
+#|            x| <next-subthread>            | Esc n       | jump to the next subthread                          |
+#|            x| <purge-message>             |             | delete the current entry, bypassing the trash folder|
+#|            x| <query>                     | Q           | query external program for addresses                |
+#| q           | <quit>                      | q           | save changes to mailbox and quit                    |
+#| rr          | <reply>                     | r           | reply to a message                                  |
+#| Esc ~       | <show-limit>                | Esc l       | show currently active limit pattern                 |
+#|            x| <sort-mailbox>              | o           | sort messages                                       |
+#|            x| <sort-reverse>              | O           | sort messages in reverse order                      |
+#|            x| <print-message>             | p           | print the current entry                             |
+#| K           | <previous-thread>           | ^P          | jump to previous thread                             |
+#|            x| <previous-subthread>        | Esc p       | jump to previous subthread                          |
+#|            x| <recall-message>            | R           | recall a postponed message                          |
+#|            x| <read-thread>               | ^R          | mark the current thread as read                     |
+#|            x| <read-subthread>            | Esc r       | mark the current subthread as read                  |
+#|            x| <resend-message>            | Esc e       | use the current message as a template for a new one |
+#| ss          | <save-message>              | s           | save message/attachment to a mailbox/file           |
+#| t~          | <tag-pattern>               | T           | tag messages matching a pattern                     |
+#| tS          | <tag-subthread>             |             | tag the current subthread                           |
+#| tT          | <tag-thread>                | Esc t       | tag the current thread                              |
+#|            x| <untag-pattern>             | ^T          | untag messages matching a pattern                   |
+#|            x| <undelete-message>          | u           | undelete the current entry                          |
+#|            x| <undelete-pattern>          | U           | undelete messages matching a pattern                |
+#|            x| <undelete-subthread>        | Esc u       | undelete all messages in subthread                  |
+#|            x| <undelete-thread>           | ^U          | undelete all messages in thread                     |
+#| v           | <view-attachments>          | v           | show MIME attachments                               |
+#|            x| <show-version>              | V           | show the Mutt version number and date               |
+#| ww          | <set-flag>                  | w           | set a status flag on a message                      |
+#| Esc w       | <clear-flag>                | W           | clear a status flag from a message                  |
+#|             | <display-message>           | MUTT_ENTER_S| display a message                                   |
+#|            x| <mark-message>              | ~           | create a hotkey macro for the current message       |
+#|            x| <buffy-list>                | .           | list mailboxes with new mail                        |
+#|            x| <sync-mailbox>              | $           | save changes to mailbox                             |
+#| @           | <display-address>           | @           | display full address of sender                      |
+#| ||          | <pipe-message>              | |           | pipe message/attachment to a shell command          |
+#|             | <next-new>                  |             | jump to the next new message                        |
+#| <Tab>       | <next-new-then-unread>      | <Tab>       | jump to the next new or unread message              |
+#|             | <previous-new>              |             | jump to the previous new message                    |
+#| <Backtab>   | <previous-new-then-unread>  | Esc <Tab>   | jump to the previous new or unread message          |
+#|             | <next-unread>               |             | jump to the next unread message                     |
+#|             | <previous-unread>           |             | jump to the previous unread message                 |
+#| gp          | <parent-message>            | P           | jump to parent message in thread                    |
+#| gr          | <root-message>              |             | jump to root message in thread                      |
+#| ^K          | <extract-keys>              | ^K          | extract supported public keys                       |
+#|            x| <forget-passphrase>         | ^F          | wipe passphrase(s) from memory                      |
+#|            x| <check-traditional-pgp>     | Esc P       | check for classic PGP                               |
+#|            x| <mail-key>                  | Esc k       | mail a PGP public key                               |
+#|             | <decrypt-copy>              |             | make decrypted copy                                 |
+#|             | <decrypt-save>              |             | make decrypted copy and delete                      |
+#|             | <sidebar-first>             |             | move the highlight to the first mailbox             |
+#|             | <sidebar-last>              |             | move the highlight to the last mailbox              |
+#|             | <sidebar-next>              |             | move the highlight to next mailbox                  |
+#|             | <sidebar-next-new>          |             | move the highlight to next mailbox with new mail    |
+#|             | <sidebar-open>              |             | open highlighted mailbox                            |
+#|             | <sidebar-page-down>         |             | scroll the sidebar down 1 page                      |
+#|             | <sidebar-page-up>           |             | scroll the sidebar up 1 page                        |
+#|             | <sidebar-prev>              |             | move the highlight to previous mailbox              |
+#|             | <sidebar-prev-new>          |             | move the highlight to previous mailbox with new mail|
+#| <>          | <sidebar-toggle-visible>    |             | make the sidebar (in)visible                        |
+
+bind index a noop
+bind index A noop
+bind index B noop
+bind index b noop
+bind index bb bounce-message
+bind index \# noop
+bind index \#T break-thread
+bind index y noop
+bind index c noop
+bind index <Esc>c noop
+bind index <Esc>v noop
+bind index zo collapse-thread
+bind index zc collapse-thread
+bind index <Esc>V noop
+bind index zO collapse-all
+bind index zC collapse-all
+bind index C noop
+bind index yy copy-message
+bind index <Esc>C noop
+bind index <Esc>s noop
+bind index d noop
+bind index dd delete-message
+bind index D noop
+bind index d~ delete-pattern
+bind index \Cd noop
+bind index dT delete-thread
+bind index <Esc>d noop
+bind index e noop
+bind index Y noop
+bind index \Ce noop
+bind index f noop
+bind index ff forward-message
+bind index F noop
+bind index !! flag-message
+bind index ra group-chat-reply
+bind index g noop
+bind index rg group-reply
+bind index G noop
+bind index h noop
+bind index j noop
+bind index k noop
+bind index l noop
+bind index ~ noop
+bind index ~ limit
+bind index L noop
+bind index rl list-reply
+bind index N noop
+bind index % noop
+bind index \Cn noop
+bind index J next-thread
+bind index <Esc>n noop
+bind index Q noop
+bind index q noop
+bind index q quit
+bind index r noop
+bind index rr reply
+bind index <Esc>l noop
+bind index <Esc>~ show-limit
+bind index o noop
+bind index O noop
+bind index p noop
+bind index \Cp noop
+bind index K previous-thread
+bind index <Esc>p noop
+bind index R noop
+bind index \Cr noop
+bind index <Esc>r noop
+bind index <Esc>e noop
+bind index s noop
+bind index ss save-message
+bind index T noop
+bind index t~ tag-pattern
+bind index tS tag-subthread
+bind index <Esc>t noop
+bind index tT tag-thread
+bind index \Ct noop
+bind index u noop
+bind index U noop
+bind index <Esc>u noop
+bind index \Cu noop
+bind index v noop
+bind index v view-attachments
+bind index V noop
+bind index w noop
+bind index ww set-flag
+bind index W noop
+bind index <Esc>w clear-flag
+bind index . noop
+bind index $ noop
+bind index | noop
+bind index || pipe-message
+bind index <Esc><Tab> noop
+bind index <Backtab> previous-new-then-unread
+bind index P noop
+bind index gp parent-message
+bind index gr root-message
+bind index \Cf noop
+bind index <Esc>P noop
+bind index <Esc>k noop
+bind index <> sidebar-toggle-visible
+bind index h help
+
+#----------------------------------------------------------------------------------------------------------------
+##4.3. Pager Menu
+#----------------------------------------------------------------------------------------------------------------
+##Table 9.4. Default Pager Menu Bindings
+#| Vim-like    | Function                    | Default Key | Description                                         |
+#| --------    | --------                    | ----------- | -----------                                         |
+#|            x| <background-compose-menu>   | B           | list and select backgrounded compose sessions       |
+#| #T          | <break-thread>              | #           | break the thread in two                             |
+#|            x| <browse-mailboxes>          | y           | select a new mailbox from the browser               |
+#|            x| <browse-mailboxes-readonly> |             | select a new mailbox from the browser in read only mode                         |
+#|            x| <create-alias>              | a           | create an alias from a message sender               |
+#| bb          | <bounce-message>            | b           | remail a message to another user                    |
+#|            x| <change-folder>             | c           | open a different folder                             |
+#|            x| <change-folder-readonly>    | Esc c       | open a different folder in read only mode           |
+#|             | <next-unread-mailbox>       |             | open next mailbox with new mail                     |
+#|             | <compose-to-sender>         |             | compose new message to the current message sender   |
+#| yy          | <copy-message>              | C           | copy a message to a file/mailbox                    |
+#|            x| <decode-copy>               | Esc C       | make decoded (text/plain) copy                      |
+#| dd          | <delete-message>            | d           | delete the current entry                            |
+#| dT          | <delete-thread>             | ^D          | delete all messages in thread                       |
+#|            x| <delete-subthread>          | Esc d       | delete all messages in subthread                    |
+#| ww          | <set-flag>                  | w           | set a status flag on a message                      |
+#| Esc w       | <clear-flag>                | W           | clear a status flag from a message                  |
+#|            x| <edit>                      | e           | edit the raw message                                |
+#|            x| <edit-label>                | Y           | add, change, or delete a message's label            |
+#|            x| <edit-type>                 | ^E          | edit attachment content type                        |
+#| ff          | <forward-message>           | f           | forward a message with comments                     |
+#| !!          | <flag-message>              | F           | toggle a message's 'important' flag                 |
+#| ra          | <group-chat-reply>          |             | reply to all recipients preserving To/Cc            |
+#| rg          | <group-reply>               | g           | reply to all recipients                             |
+#|             | <imap-fetch-mail>           |             | force retrieval of mail from IMAP server            |
+#|             | <imap-logout-all>           |             | logout from all IMAP servers                        |
+#|            x| <display-toggle-weed>       | h           | display message and toggle header weeding           |
+#|            x| <next-undeleted>            | j           | move to the next undeleted message                  |
+#| J           | <next-entry>                | J           | move to the next entry                              |
+#|            x| <previous-undeleted>        | k           | move to the previous undeleted message              |
+#| K           | <previous-entry>            | K           | move to the previous entry                          |
+#| &           | <link-threads>              | &           | link tagged message to the current one              |
+#| rl          | <list-reply>                | L           | reply to specified mailing list                     |
+#| ^L          | <redraw-screen>             | ^L          | clear and redraw the screen                         |
+#| m           | <mail>                      | m           | compose a new mail message                          |
+#|            x| <mark-as-new>               | N           | toggle a message's 'new' flag                       |
+#|            x| <toggle-write>              | %           | toggle whether the mailbox will be rewritten        |
+#| n           | <search-next>               | n           | search for next match                               |
+#| J           | <next-thread>               | ^N          | jump to the next thread                             |
+#|            x| <next-subthread>            | Esc n       | jump to the next subthread                          |
+#|            x| <sort-mailbox>              | o           | sort messages                                       |
+#|            x| <sort-reverse>              | O           | sort messages in reverse order                      |
+#|            x| <print-message>             | p           | print the current entry                             |
+#| K           | <previous-thread>           | ^P          | jump to previous thread                             |
+#|            x| <previous-subthread>        | Esc p       | jump to previous subthread                          |
+#|            x| <purge-message>             |             | delete the current entry, bypassing the trash folder|
+#| Q           | <quit>                      | Q           | save changes to mailbox and quit                    |
+#| q           | <exit>                      | q           | exit this menu                                      |
+#| rr          | <reply>                     | r           | reply to a message                                  |
+#|            x| <recall-message>            | R           | recall a postponed message                          |
+#|            x| <read-thread>               | ^R          | mark the current thread as read                     |
+#|            x| <read-subthread>            | Esc r       | mark the current subthread as read                  |
+#|            x| <resend-message>            | Esc e       | use the current message as a template for a new one |
+#| ss          | <save-message>              | s           | save message/attachment to a mailbox/file           |
+#|            x| <skip-quoted>               | S           | skip beyond quoted text                             |
+#|            x| <decode-save>               | Esc s       | make decoded copy (text/plain) and delete           |
+#| tt          | <tag-message>               | t           | tag the current entry                               |
+#|            x| <toggle-quoted>             | T           | toggle display of quoted text                       |
+#|            x| <undelete-message>          | u           | undelete the current entry                          |
+#|            x| <undelete-subthread>        | Esc u       | undelete all messages in subthread                  |
+#|            x| <undelete-thread>           | ^U          | undelete all messages in thread                     |
+#| v           | <view-attachments>          | v           | show MIME attachments                               |
+#|            x| <show-version>              | V           | show the Mutt version number and date               |
+#| \\          | <search-toggle>             | \\          | toggle search pattern coloring                      |
+#| @           | <display-address>           | @           | display full address of sender                      |
+#|             | <next-new>                  |             | jump to the next new message                        |
+#| |           | <pipe-message>              | |           | pipe message/attachment to a shell command          |
+#| h           | <help>                      | ?           | this screen                                         |
+#| ^F          | <next-page>                 | <Space>     | move to the next page                               |
+#| ^B          | <previous-page>             | -           | move to the previous page                           |
+#| gg          | <top>                       | ^           | jump to the top of the message                      |
+#|            x| <sync-mailbox>              | $           | save changes to mailbox                             |
+#|            x| <shell-escape>              | !           | invoke a command in a subshell                      |
+#| :           | <enter-command>             | :           | enter a muttrc command                              |
+#|            x| <buffy-list>                | .           | list mailboxes with new mail                        |
+#| /           | <search>                    | /           | search for a regular expression                     |
+#| ?           | <search-reverse>            | Esc /       | search backwards for a regular expression           |
+#| N           | <search-opposite>           |             | search for next match in opposite direction         |
+#| j           | <next-line>                 | MUTT_ENTER_S| scroll down one line                                |
+#|            x| <error-history>             |             | display recent history of error messages            |
+#|             | <jump>                      |             | jump to an index number                             |
+#|            x| <next-unread>               |             | jump to the next unread message                     |
+#|            x| <previous-new>              |             | jump to the previous new message                    |
+#|            x| <previous-unread>           |             | jump to the previous unread message                 |
+#| ^U          | <half-up>                   |             | scroll up 1/2 page                                  |
+#| ^D          | <half-down>                 |             | scroll down 1/2 page                                |
+#| k           | <previous-line>             |             | scroll up one line                                  |
+#| G           | <bottom>                    |             | jump to the bottom of the message                   |
+#| gp          | <parent-message>            | P           | jump to parent message in thread                    |
+#| gr          | <root-message>              |             | jump to root message in thread                      |
+#|            x| <check-traditional-pgp>     | Esc P       | check for classic PGP                               |
+#|            x| <mail-key>                  | Esc k       | mail a PGP public key                               |
+#| ^K          | <extract-keys>              | ^K          | extract supported public keys                       |
+#|            x| <forget-passphrase>         | ^F          | wipe passphrase(s) from memory                      |
+#|             | <decrypt-copy>              |             | make decrypted copy                                 |
+#|             | <decrypt-save>              |             | make decrypted copy and delete                      |
+#|             | <what-key>                  |             | display the keycode for a key press                 |
+#|             | <check-stats>               |             | calculate message statistics for all mailboxes      |
+#|             | <sidebar-first>             |             | move the highlight to the first mailbox             |
+#|             | <sidebar-last>              |             | move the highlight to the last mailbox              |
+#|             | <sidebar-next>              |             | move the highlight to next mailbox                  |
+#|             | <sidebar-next-new>          |             | move the highlight to next mailbox with new mail    |
+#|             | <sidebar-open>              |             | open highlighted mailbox                            |
+#|             | <sidebar-page-down>         |             | scroll the sidebar down 1 page                      |
+#|             | <sidebar-page-up>           |             | scroll the sidebar up 1 page                        |
+#|             | <sidebar-prev>              |             | move the highlight to previous mailbox              |
+#|             | <sidebar-prev-new>          |             | move the highlight to previous mailbox with new mail|
+#| <>          | <sidebar-toggle-visible>    |             | make the sidebar (in)visible                        |
+
+bind pager B noop
+bind pager \# noop
+bind pager \#T break-thread
+bind pager y noop
+bind pager a noop
+bind pager b noop
+bind pager bb bounce-message
+bind pager c noop
+bind pager <Esc>c noop
+bind pager C noop
+bind pager yy copy-message
+bind pager <Esc>C noop
+bind pager d noop
+bind pager dd delete-message
+bind pager \Cd noop
+bind pager dT delete-thread
+bind pager <Esc>d noop
+bind pager w noop
+bind pager ww set-flag
+bind pager W noop
+bind pager <Esc>w clear-flag
+bind pager e noop
+bind pager Y noop
+bind pager \Ce noop
+bind pager f noop
+bind pager ff forward-message
+bind pager F noop
+bind pager !! flag-message
+bind pager ra group-chat-reply
+bind pager g noop
+bind pager rg group-reply
+bind pager h noop
+bind pager j noop
+bind pager J noop
+bind pager J next-entry
+bind pager k noop
+bind pager L noop
+bind pager rl list-reply
+bind pager N noop
+bind pager % noop
+bind pager \Cn noop
+bind pager J next-thread
+bind pager <Esc>n noop
+bind pager o noop
+bind pager O noop
+bind pager p noop
+bind pager \Cp noop
+bind pager K previous-thread
+bind pager <Esc>p noop
+bind pager r noop
+bind pager rr reply
+bind pager R noop
+bind pager \Cr noop
+bind pager <Esc>r noop
+bind pager <Esc>e noop
+bind pager s noop
+bind pager ss save-message
+bind pager S noop
+bind pager <Esc>s noop
+bind pager t noop
+bind pager tt tag-message
+bind pager T noop
+bind pager u noop
+bind pager <Esc>u noop
+bind pager \Cu noop
+bind pager V noop
+bind pager ? noop
+bind pager h help
+bind pager <Space> noop
+bind pager \Cf next-page
+bind pager - noop
+bind pager \Cb previous-page
+bind pager ^ noop
+bind pager gg top
+bind pager $ noop
+bind pager ! noop
+bind pager . noop
+bind pager <Esc>/ noop
+bind pager ? search-reverse
+bind pager N search-opposite
+bind pager j next-line
+bind pager \Cd half-down
+bind pager k previous-line
+bind pager G bottom
+bind pager P noop
+bind pager gp parent-message
+bind pager gr root-message
+bind pager <Esc>P noop
+bind pager <Esc>k noop
+bind pager \Cf noop
+bind pager <> sidebar-toggle-visible
+
+#----------------------------------------------------------------------------------------------------------------
+##4.4. Alias Menu
+#----------------------------------------------------------------------------------------------------------------
+##Table 9.5. Default Alias Menu Bindings
+#| Vim-like    | Function                    | Default Key | Description                                         |
+#| --------    | --------                    | ----------- | -----------                                         |
+#|             | <delete-entry>              | d           | delete the current entry                            |
+#|             | <undelete-entry>            | u           | undelete the current entry                          |
+
+#----------------------------------------------------------------------------------------------------------------
+##4.6. Attachment Menu
+#----------------------------------------------------------------------------------------------------------------
+##Table 9.7. Default Attachment Menu Bindings
+#| Vim-like    | Function                    | Default Key | Description                                         |
+#| --------    | --------                    | ----------- | -----------                                         |
+#|             | <bounce-message>            | b           | remail a message to another user                    |
+#|             | <display-toggle-weed>       | h           | display message and toggle header weeding           |
+#|             | <compose-to-sender>         |             | compose new message to the current message sender   |
+#|             | <edit-type>                 | ^E          | edit attachment content type                        |
+#|             | <print-entry>               | p           | print the current entry                             |
+#|             | <save-entry>                | s           | save message/attachment to a mailbox/file           |
+#|             | <pipe-entry>                | |           | pipe message/attachment to a shell command          |
+#|             | <view-mailcap>              | m           | force viewing of attachment using mailcap           |
+#|             | <reply>                     | r           | reply to a message                                  |
+#|             | <resend-message>            | Esc e       | use the current message as a template for a new one |
+#|             | <group-chat-reply>          |             | reply to all recipients preserving To/Cc            |
+#|             | <group-reply>               | g           | reply to all recipients                             |
+#|             | <list-reply>                | L           | reply to specified mailing list                     |
+#|             | <forward-message>           | f           | forward a message with comments                     |
+#|             | <view-text>                 | T           | view attachment as text                             |
+#|             | <view-attach>               | MUTT_ENTER_S| view attachment using mailcap entry if necessary    |
+#|             | <delete-entry>              | d           | delete the current entry                            |
+#|             | <undelete-entry>            | u           | undelete the current entry                          |
+#|             | <collapse-parts>            | v           | Toggle display of subparts                          |
+#|             | <check-traditional-pgp>     | Esc P       | check for classic PGP                               |
+#|             | <extract-keys>              | ^K          | extract supported public keys                       |
+#|             | <forget-passphrase>         | ^F          | wipe passphrase(s) from memory                      |
+
+#----------------------------------------------------------------------------------------------------------------
+##4.7. Compose Menu
+#----------------------------------------------------------------------------------------------------------------
+##Table 9.8. Default Compose Menu Bindings
+#| Vim-like    | Function                    | Default Key | Description                                         |
+#| --------    | --------                    | ----------- | -----------                                         |
+#|             | <attach-file>               | a           | attach file(s) to this message                      |
+#|             | <attach-message>            | A           | attach message(s) to this message                   |
+#|             | <edit-bcc>                  | b           | edit the BCC list                                   |
+#|             | <edit-cc>                   | c           | edit the CC list                                    |
+#|             | <copy-file>                 | C           | save message/attachment to a mailbox/file           |
+#|             | <detach-file>               | D           | delete the current entry                            |
+#|             | <toggle-disposition>        | ^D          | toggle disposition between inline/attachment        |
+#|             | <edit-description>          | d           | edit attachment description                         |
+#|             | <edit-message>              | e           | edit the message                                    |
+#|             | <edit-headers>              | E           | edit the message with headers                       |
+#|             | <edit-file>                 | ^X e        | edit the file to be attached                        |
+#|             | <edit-encoding>             | ^E          | edit attachment transfer-encoding                   |
+#|             | <edit-from>                 | Esc f       | edit the from field                                 |
+#|             | <edit-fcc>                  | f           | enter a file to save a copy of this message in      |
+#|             | <filter-entry>              | F           | filter attachment through a shell command           |
+#|             | <get-attachment>            | G           | get a temporary copy of an attachment               |
+#|             | <display-toggle-weed>       | h           | display message and toggle header weeding           |
+#|             | <ispell>                    | i           | run ispell on the message                           |
+#|             | <print-entry>               | l           | print the current entry                             |
+#|             | <edit-mime>                 | m           | edit attachment using mailcap entry                 |
+#|             | <new-mime>                  | n           | compose new attachment using mailcap entry          |
+#|             | <autocrypt-menu>            | o           | show autocrypt compose menu options                 |
+#|             | <postpone-message>          | P           | save this message to send later                     |
+#|             | <edit-reply-to>             | r           | edit the Reply-To field                             |
+#|             | <rename-attachment>         | ^O          | send attachment with a different name               |
+#|             | <rename-file>               | R           | rename/move an attached file                        |
+#|             | <edit-subject>              | s           | edit the subject of this message                    |
+#|             | <edit-to>                   | t           | edit the TO list                                    |
+#|             | <edit-type>                 | ^T          | edit attachment content type                        |
+#|             | <write-fcc>                 | w           | write the message to a folder                       |
+#|             | <toggle-unlink>             | u           | toggle whether to delete file after sending it      |
+#|             | <toggle-recode>             |             | toggle recoding of this attachment                  |
+#|             | <update-encoding>           | U           | update an attachment's encoding info                |
+#|             | <view-attach>               | MUTT_ENTER_S| view attachment using mailcap entry if necessary    |
+#|             | <view-alt>                  | v           | view multipart/alternative                          |
+#|             | <view-alt-text>             | Esc v       | view multipart/alternative as text                  |
+#|             | <view-alt-mailcap>          | V           | view multipart/alternative using mailcap            |
+#|             | <send-message>              | y           | send the message                                    |
+#|             | <pipe-entry>                | |           | pipe message/attachment to a shell command          |
+#|             | <move-down>                 |             | move attachment down in compose menu list           |
+#|             | <move-up>                   |             | move attachment up in compose menu list             |
+#|             | <attach-key>                | Esc k       | attach a PGP public key                             |
+#|             | <pgp-menu>                  | p           | show PGP options                                    |
+#|             | <forget-passphrase>         | ^F          | wipe passphrase(s) from memory                      |
+#|             | <smime-menu>                | S           | show S/MIME options                                 |
+#|             | <mix>                       | M           | send the message through a mixmaster remailer chain |
+
+#----------------------------------------------------------------------------------------------------------------
+##4.8. Postpone Menu
+#----------------------------------------------------------------------------------------------------------------
+##Table 9.9. Default Postpone Menu Bindings
+#| Vim-like    | Function                    | Default Key | Description                                         |
+#| --------    | --------                    | ----------- | -----------                                         |
+#|             | <delete-entry>              | d           | delete the current entry                            |
+#|             | <undelete-entry>            | u           | undelete the current entry                          |
+
+#----------------------------------------------------------------------------------------------------------------
+##4.9. Browser Menu
+#----------------------------------------------------------------------------------------------------------------
+##Table 9.10. Default Browser Menu Bindings
+#| Vim-like    | Function                    | Default Key | Description                                         |
+#| --------    | --------                    | ----------- | -----------                                         |
+#|             | <change-dir>                | c           | change directories                                  |
+#|             | <descend-directory>         |             | descend into a directory                            |
+#|             | <display-filename>          | @           | display the currently selected file's name          |
+#|             | <enter-mask>                | m           | enter a file mask                                   |
+#|             | <sort>                      | o           | sort messages                                       |
+#|             | <sort-reverse>              | O           | sort messages in reverse order                      |
+#|             | <select-new>                | N           | select a new file in this directory                 |
+#|             | <check-new>                 |             | check mailboxes for new mail                        |
+#|             | <toggle-mailboxes>          | <Tab>       | toggle whether to browse mailboxes or all files     |
+#|             | <view-file>                 | <Space>     | view file                                           |
+#|             | <buffy-list>                | .           | list mailboxes with new mail                        |
+#|             | <create-mailbox>            | C           | create a new mailbox (IMAP only)                    |
+#|             | <delete-mailbox>            | d           | delete the current mailbox (IMAP only)              |
+#|             | <rename-mailbox>            | r           | rename the current mailbox (IMAP only)              |
+#|             | <subscribe>                 | s           | subscribe to current mailbox (IMAP only)            |
+#|             | <unsubscribe>               | u           | unsubscribe from current mailbox (IMAP only)        |
+#|             | <toggle-subscribed>         | T           | toggle view all/subscribed mailboxes (IMAP only)    |
+
+#----------------------------------------------------------------------------------------------------------------
+##4.13. Editor Menu
+#----------------------------------------------------------------------------------------------------------------
+##Table 9.14. Default Editor Menu Bindings
+#| Vim-like    | Function                    | Default Key | Description                                         |
+#| --------    | --------                    | ----------- | -----------                                         |
+#|             | <bol>                       | ^A          | jump to the beginning of the line                   |
+#|             | <backward-char>             | ^B          | move the cursor one character to the left           |
+#|             | <backward-word>             | Esc b       | move the cursor to the beginning of the word        |
+#|             | <capitalize-word>           | Esc c       | capitalize the word                                 |
+#|             | <downcase-word>             | Esc l       | convert the word to lower case                      |
+#|             | <upcase-word>               | Esc u       | convert the word to upper case                      |
+#|             | <delete-char>               | ^D          | delete the char under the cursor                    |
+#|             | <eol>                       | ^E          | jump to the end of the line                         |
+#|             | <forward-char>              | ^F          | move the cursor one character to the right          |
+#|             | <forward-word>              | Esc f       | move the cursor to the end of the word              |
+#|             | <backspace>                 | <Backspace> | delete the char in front of the cursor              |
+#|             | <kill-eol>                  | ^K          | delete chars from cursor to end of line             |
+#|             | <kill-eow>                  | Esc d       | delete chars from the cursor to the end of the word |
+#|             | <kill-line>                 | ^U          | delete all chars on the line                        |
+#|             | <quote-char>                | ^V          | quote the next typed key                            |
+#|             | <kill-word>                 | ^W          | delete the word in front of the cursor              |
+#|             | <complete>                  | <Tab>       | complete filename or alias                          |
+#|             | <complete-query>            | ^T          | complete address with query                         |
+#|             | <buffy-cycle>               | <Space>     | cycle among incoming mailboxes                      |
+#|             | <history-up>                |             | scroll up through the history list                  |
+#|             | <history-down>              |             | scroll down through the history list                |
+#|             | <history-search>            | ^R          | search through the history list                     |
+#|             | <transpose-chars>           |             | transpose character under cursor with previous      |
+
+bind editor \Cp history-up
+bind editor \Cn history-down
+
+#-----------------------------------------------------------------------------------------
+## Action/operation macros
+#-----------------------------------------------------------------------------------------
+#macro index,pager    dd  "<delete-message><sync-mailbox>" "move message to trash"
+#macro index,pager    dat "<delete-thread><sync-mailbox>"  "move thread to trash"
+
+# For explanation of this set of macros see https://ryanlue.com/posts/2017-05-21-mutt-the-vim-way
+#macro pager          tat "<exit><mark-message>q<enter><tag-thread>'q<display-message>" "tag-thread"
+#macro index,pager    gx  "<pipe-message>urlview<enter>"                                "call urlview to extract URLs out of a message"
+#macro attach,compose gx  "<pipe-entry>urlview<enter>"                                  "call urlview to extract URLs out of a message"
+
+# See https://wiki.archlinux.org/index.php/Mutt#Viewing_URLs_in_a_web_browser
+#macro pager gx <pipe-entry>'urlview'<enter> 'Follow links with urlview'
+
+# Ctrl-R to mark all as read
+#macro index \Cr "T~U<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all messages as read"
+
+# A fallback option to open a HTML mail selected from the attachment view in the web browser defined in the environment...
+# ... because some HTML mails may not display correctly in a text-based web browser.
+# If $BROWSER is firefox, then set intl.charset.fallback.utf8_for_file to true in about:config to ensure non-ASCII characters in the HTML page are displayed correctly.
+# See https://wiki.archlinux.org/index.php/Mutt#Viewing_HTML
+#macro attach 'V' "<pipe-entry>iconv -c --to-code=UTF8 > ~/.cache/mutt/mail.html<enter><shell-escape>$BROWSER ~/.cache/mutt/mail.html<enter>"
+
+# Switch mailbox folders
+#macro index,pager gf "<sync-mailbox><change-folder>?" "open mailbox..."
+
+# Sync mail remotely to all accounts
+#macro index \$a "<sync-mailbox><shell-escape>mbsync --all<enter>" "sync mail remotely for all accounts"
+
